@@ -1,2 +1,3 @@
-# zsh-caesardev
-My extendable zsh plugin
+# About
+
+Personal daily dev utilities by @caesar0301.
