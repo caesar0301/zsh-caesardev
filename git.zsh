@@ -10,6 +10,7 @@ alias gll="git log | less"
 alias grsh="git reset --soft HEAD^ && git reset --hard HEAD"
 alias gsrh="git submodule foreach --recursive git reset --hard"
 alias gsur="git submodule update --init --recursive"
+alias gqu="git-quick-update"
 
 # Pull all submodules
 git-submodule-latest() {
