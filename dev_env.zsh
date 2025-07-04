@@ -56,12 +56,8 @@ _init_lisp_env() {
 }
 
 # Function to initialize all development environments
-_init_global_dev_envs() {
-  _init_pyenv
-  _init_jenv
-  _init_go_env
-  _init_haskell_env
-  _init_lisp_env
-}
-
-_init_global_dev_envs
+_init_pyenv
+#_init_jenv
+#_init_go_env
+#_init_haskell_env
+_init_lisp_env
