@@ -20,7 +20,7 @@ function _superman_decrypt_file() {
   local alias_name="${1:-default}"
   local encrypted_file="${2:-}"
   local target_file="${3:-}"
-  local gpg_tool="gpg-dotme"
+  local gpg_tool="$HOME/.dotfiles/bin/gpg-dotme"
 
   # Show help if requested
   if [[ "$alias_name" == "help" || "$alias_name" == "-h" || "$alias_name" == "--help" ]]; then
