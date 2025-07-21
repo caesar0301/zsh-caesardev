@@ -1,29 +1,42 @@
-# Editor
+# =====================
+# Editor Aliases
+# =====================
 export EDITOR=vim
 alias vi=vim
 alias vim=nvim
 alias em='emacs -nw'
+
+# =====================
+# File/Directory Listing
+# =====================
 alias ll='ls -alF'
 
-# k8s
+# =====================
+# Kubernetes
+# =====================
 alias k="kubectl"
 
-# Stat.
-alias duh="du -hs .[^.]*"
+# =====================
+# Disk Usage/Stats
+# =====================
+# Human-readable disk usage for dotfiles
+duh() { du -hs .[^.]*; }
+alias duh=duh
 
-# Rsync preseving symlinks, timestamps, permissions
+# =====================
+# Rsync (preserve symlinks, timestamps, permissions)
+# =====================
 alias rsync2="rsync -rlptgoD --progress"
 
+# =====================
+# Search (ag, perf, dict)
+# =====================
 # Enable search hidden files by default
 alias ag='ag -u'
-
-# Perf
+# Show memory usage sorted by %mem
 alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
-
-# StarDict console
-# Install dicts into ~/.local/share/stardict/dic or /usr/share/stardict/dic
+# StarDict console (install dicts into ~/.local/share/stardict/dic or /usr/share/stardict/dic)
 alias dict="sdcv -0 -c"
-
-# Ag searching
-alias ag_cmake='ag --ignore-dir="build" -G "(ODPSBuild.txt|CMakeLists.txt|.\.cmake)"'
-alias ag_bazel='ag --ignore-dir="build" -G "(BUILD|.\.bazel)"'
+# Ag searching for CMake/Bazel
+alias ag_cmake='ag --ignore-dir="build" -G "(ODPSBuild.txt|CMakeLists.txt|.\\.cmake)"'
+alias ag_bazel='ag --ignore-dir="build" -G "(BUILD|.\\.bazel)"'

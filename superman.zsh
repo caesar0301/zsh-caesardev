@@ -1,22 +1,26 @@
 #!/usr/bin/env zsh
 
-# Superman utilities for zsh-caesardev
+# =====================
+# Superman Utilities
+# =====================
 
-# Simple output functions
+# --- Error Output Utility ---
+# Print error if verbose mode is enabled
 _superman_print_error() {
   if [[ -n "$ZSH_CAESARDEV_VERBOSE" ]]; then
     echo "$1" >&2
   fi
 }
 
-# Internal decrypt function (converted from decrypt-zshenv-dotme script)
-function _superman_decrypt_file() {
+# --- Decryption Utilities ---
+# Decrypt a file using gpg-dotme tool
+_superman_decrypt_file() {
   local alias_name="${1:-default}"
   local encrypted_file="${2:-}"
   local target_file="${3:-}"
   local gpg_tool="$HOME/.dotfiles/bin/gpg-dotme"
 
-  # Show help if requested
+  # Help message
   if [[ "$alias_name" == "help" || "$alias_name" == "-h" || "$alias_name" == "--help" ]]; then
     echo "Superman Decrypt Function"
     echo ""
@@ -33,19 +37,21 @@ function _superman_decrypt_file() {
     return 0
   fi
 
-  # Check if encrypted file exists
+  # Check for required files and tools
+  if [[ -z "$encrypted_file" || -z "$target_file" ]]; then
+    _superman_print_error "Missing encrypted_file or target_file argument"
+    return 1
+  fi
   if [[ ! -f "$encrypted_file" ]]; then
     _superman_print_error "Encrypted file '$encrypted_file' not found"
     return 1
   fi
-
-  # Check if gpg tool exists and is executable
-  if ! command -v "$gpg_tool" &>/dev/null; then
-    _superman_print_error "$gpg_tool not found in PATH"
+  if [[ ! -x "$gpg_tool" ]]; then
+    _superman_print_error "$gpg_tool not found or not executable"
     return 1
   fi
 
-  # Create backup of existing target file if it exists
+  # Backup existing target file
   if [[ -f "$target_file" ]]; then
     local backup_file="${target_file:h}/.zshenv.local.bak"
     cp "$target_file" "$backup_file"
@@ -53,7 +59,7 @@ function _superman_decrypt_file() {
 
   # Decrypt to a temporary file first
   local tmp_decrypt_file
-  tmp_decrypt_file=$(mktemp "${target_file}.tmp.XXXXXX")
+  tmp_decrypt_file=$(mktemp "${target_file}.tmp.XXXXXX") || { _superman_print_error "mktemp failed"; return 1; }
   if "$gpg_tool" dec "$alias_name" "$encrypted_file" >"$tmp_decrypt_file" 2>/dev/null; then
     mv "$tmp_decrypt_file" "$target_file"
     return 0
@@ -64,39 +70,30 @@ function _superman_decrypt_file() {
   fi
 }
 
-# Function to decrypt and source local .zshenv.local.env
-# This function will:
-# 1. Find the encrypted file relative to the script location
-# 2. Decrypt the .zshenv.local.enc file
-# 3. Source it into the current shell
-function _superman_decrypt_and_source_local_env() {
+# Decrypt and source local .zshenv.local.env
+_superman_decrypt_and_source_local_env() {
   local script_dir="${${(%):-%x}:h}"
   local encrypted_file="$script_dir/.zshenv.local.enc"
   local decrypted_file="$HOME/.zshenv.local"
 
-  # Check if encrypted file exists
   if [[ ! -f "$encrypted_file" ]]; then
     _superman_print_error "Encrypted file not found at $encrypted_file"
     return 1
   fi
 
-  # Decrypt the file using internal function
   if ! _superman_decrypt_file "drjaminchen" "$encrypted_file" "$decrypted_file"; then
     _superman_print_error "Failed to decrypt .zshenv.local.enc"
     return 1
   fi
 
-  # Check if decrypted file was created
   if [[ ! -f "$decrypted_file" ]]; then
     _superman_print_error "Decrypted file not found at $decrypted_file"
     return 1
   fi
 
-  # Source the decrypted file
-  if source "$decrypted_file"; then
-    return 0
-  else
+  if ! source "$decrypted_file"; then
     _superman_print_error "Failed to source .zshenv.local"
     return 1
   fi
+  return 0
 }

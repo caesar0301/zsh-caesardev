@@ -1,4 +1,6 @@
-# Git aliases
+# =====================
+# Git Aliases
+# =====================
 alias ga="git add"
 alias gb="git branch"
 alias gba="git branch -av"
@@ -12,14 +14,16 @@ alias gsrh="git submodule foreach --recursive git reset --hard"
 alias gsur="git submodule update --init --recursive"
 alias gqu="git-quick-update"
 
-# Pull all submodules
+# =====================
+# Submodule Utilities
+# =====================
+# Pull all submodules to latest master
 git-submodule-latest() {
   git submodule foreach git pull origin master
 }
 
+# Reset and clean repo and submodules
 git-reset-recurse-submodules() {
-  #Cleans and resets a git repo and its submodules
-  #https://gist.github.com/nicktoumpelis/11214362
   git reset --hard
   git submodule sync --recursive
   git submodule update --init --force --recursive
@@ -27,10 +31,13 @@ git-reset-recurse-submodules() {
   git submodule foreach --recursive git clean -ffdx
 }
 
-# Remove deleted file from git cache
+# =====================
+# Prune Utilities
+# =====================
+# Remove deleted files from git cache
 git-prune-cache() {
   FILES=$(git ls-files -d)
-  if [[ ! -z $FILES ]]; then
+  if [[ -n $FILES ]]; then
     git rm $FILES
   else
     echo "No deleted files"
@@ -39,32 +46,32 @@ git-prune-cache() {
 
 # Remove git submodule
 git-prune-submodule() {
-  SUBMODULE=$1
-  git submodule deinit -f -- $SUBMODULE
+  local SUBMODULE=$1
+  if [[ -z $SUBMODULE ]]; then
+    echo "Usage: git-prune-submodule <submodule_path>" >&2
+    return 1
+  fi
+  git submodule deinit -f -- "$SUBMODULE"
   rm -rf .git/modules/$SUBMODULE
   git rm -f $SUBMODULE
 }
 
+# =====================
+# Quick Update Utility
+# =====================
+# Commit and push all modified files with a generated message
 git-quick-update() {
-  # Get list of both staged and unstaged modified files, removing duplicates
+  local modified_files commit_message
   modified_files=$(git diff --name-only && git diff --cached --name-only | sort -u)
-
-  # Check if there are any modified files
   if [ -z "$modified_files" ]; then
     echo "No modified files to commit."
     return 1
   fi
-
-  # Generate a commit message
   commit_message="Update:"
   for file in $modified_files; do
     commit_message="$commit_message \"$file\""
   done
-
-  # Stage the modified files
   git add -u
-
-  # Commit and push the changes
   if git commit -m "$commit_message" && git push; then
     echo "Changes committed and pushed successfully."
   else
@@ -73,41 +80,33 @@ git-quick-update() {
   fi
 }
 
-# Prune git branch locally and remotely
+# =====================
+# Branch Prune Utility
+# =====================
+# Remove a branch locally and remotely
 git-prune-branch() {
-  # Git Branch Remove (Local & Remote)
   if [ $# -eq 0 ]; then
-    echo "Usage: git-prune-branch <branch_name>"
+    echo "Usage: git-prune-branch <branch_name>" >&2
     echo "Removes specified branch locally and from origin remote"
     return 1
   fi
-
   local branch="$1"
   local current_branch=$(git symbolic-ref --short HEAD 2>/dev/null)
-
-  # Safety check: prevent deletion of current branch
   if [ "$current_branch" = "$branch" ]; then
     echo -e "\033[1;31mError: Cannot delete current branch ($branch)\033[0m"
     echo "Switch to another branch first."
     return 1
   fi
-
   echo -e "\033[1;33mRemoving branch: $branch\033[0m"
-
-  # Local deletion (force)
   if git branch -D "$branch" >/dev/null 2>&1; then
     echo -e "\033[1;32mLocal branch removed\033[0m"
   else
     echo -e "\033[1;31mLocal branch removal failed (maybe already gone?)\033[0m"
   fi
-
-  # Remote deletion
   if git push origin --delete "$branch" >/dev/null 2>&1; then
     echo -e "\033[1;32mRemote branch removed from origin\033[0m"
   else
     echo -e "\033[1;31mRemote branch removal failed (maybe it didn't exist?)\033[0m"
   fi
-
-  # Clean up tracking references
   git fetch --prune --quiet >/dev/null 2>&1
 }
