@@ -57,11 +57,15 @@ function _superman_decrypt_file() {
     cp "$target_file" "$backup_file"
   fi
 
-  # Decrypt the file using gpg tool
-  if "$gpg_tool" dec "$alias_name" "$encrypted_file" >"$target_file"; then
+  # Decrypt to a temporary file first
+  local tmp_decrypt_file
+  tmp_decrypt_file=$(mktemp "${target_file}.tmp.XXXXXX")
+  if "$gpg_tool" dec "$alias_name" "$encrypted_file" >"$tmp_decrypt_file" 2>/dev/null; then
+    mv "$tmp_decrypt_file" "$target_file"
     return 0
   else
     _superman_print_error "Failed to decrypt $encrypted_file"
+    rm -f "$tmp_decrypt_file"
     return 1
   fi
 }
