@@ -12,7 +12,9 @@ _superman_print_warning() {
 }
 
 _superman_print_error() {
-  echo "$1" >&2
+  if [[ -n "$ZSH_CAESARDEV_VERBOSE" ]]; then
+    echo "$1" >&2
+  fi
 }
 
 # Internal decrypt function (converted from decrypt-zshenv-dotme script)
