@@ -100,4 +100,3 @@ function _superman_decrypt_and_source_local_env() {
     return 1
   fi
 }
-#_superman_decrypt_and_source_local_env
