@@ -68,3 +68,10 @@ function docker-image-tag {
   MODE="${2:-release}"
   echo ${MODE}_$(date +"%Y%m%d%H%M%S")_${TAG}_$(git rev-parse HEAD | head -c 8)
 }
+
+# Stop all running docker compose projects
+function docker-compose-stop-world {
+  docker compose ls --format json | jq -r '.[].Name' | while read name; do
+    docker compose -p "$name" down
+  done
+}
