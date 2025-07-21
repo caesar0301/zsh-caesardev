@@ -3,14 +3,6 @@
 # Superman utilities for zsh-caesardev
 
 # Simple output functions
-_superman_print_info() {
-  echo "$1"
-}
-
-_superman_print_warning() {
-  echo "$1"
-}
-
 _superman_print_error() {
   if [[ -n "$ZSH_CAESARDEV_VERBOSE" ]]; then
     echo "$1" >&2
@@ -108,4 +100,4 @@ function _superman_decrypt_and_source_local_env() {
     return 1
   fi
 }
-_superman_decrypt_and_source_local_env
+#_superman_decrypt_and_source_local_env
