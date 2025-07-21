@@ -72,7 +72,7 @@ function _superman_decrypt_file() {
 # 2. Decrypt the .zshenv.local.enc file
 # 3. Source it into the current shell
 function _superman_decrypt_and_source_local_env() {
-  local script_dir="${0:h}"
+  local script_dir="${${(%):-%x}:h}"
   local encrypted_file="$script_dir/.zshenv.local.enc"
   local decrypted_file="$HOME/.zshenv.local"
 
