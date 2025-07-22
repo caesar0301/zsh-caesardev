@@ -71,6 +71,9 @@ git-quick-update() {
   for file in $modified_files; do
     commit_message="$commit_message \"$file\""
   done
+  commit_message="$commit_message [skip ci]"
+
+  # Stage the modified files
   git add -u
   if git commit -m "$commit_message" && git push; then
     echo "Changes committed and pushed successfully."
