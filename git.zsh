@@ -234,11 +234,6 @@ alias glfsmi='git lfs migrate import --include='
 # Core Git Functions
 # =====================
 
-# Get current branch name
-function current_branch() {
-  git_current_branch
-}
-
 # Check for develop and similarly named branches
 function git_develop_branch() {
   command git rev-parse --git-dir &>/dev/null || return
