@@ -7,7 +7,6 @@
 # from multiple sources into a single, organized module.
 
 # Git version checking for conditional aliases
-autoload -Uz is-at-least
 git_version="${${(As: :)$(git version 2>/dev/null)}[3]}"
 
 # =====================
@@ -70,10 +69,7 @@ alias gdt='git diff-tree --no-commit-id --name-only -r'
 # Fetch and pull aliases
 alias gf='git fetch'
 alias gfo='git fetch origin'
-# --jobs=<n> was added in git 2.8
-is-at-least 2.8 "$git_version" \
-  && alias gfa='git fetch --all --tags --prune --jobs=10' \
-  || alias gfa='git fetch --all --tags --prune'
+alias gfa='git fetch --all --tags --prune --jobs=10'
 
 alias gl='git pull'
 alias gpr='git pull --rebase'
@@ -88,16 +84,14 @@ alias gprumi='git pull --rebase=interactive upstream $(git_main_branch)'
 # Push aliases
 alias gp='git push'
 alias gpd='git push --dry-run'
-alias gpf!='git push --force'
 alias gpv='git push --verbose'
 alias gpoat='git push origin --all && git push origin --tags'
 alias gpod='git push origin --delete'
 alias gpu='git push upstream'
 
 # Force push with lease (safer than force)
-is-at-least 2.30 "$git_version" \
-  && alias gpf='git push --force-with-lease --force-if-includes' \
-  || alias gpf='git push --force-with-lease'
+alias gpf!='git push --force'
+alias gpf='git push --force-with-lease --force-if-includes'
 
 # Log aliases
 alias glog='git log --oneline --decorate --graph'
@@ -131,10 +125,7 @@ alias gstd='git stash drop'
 alias gstl='git stash list'
 alias gstp='git stash pop'
 alias gsts='git stash show --patch'
-# use the default stash push on git 2.13 and newer
-is-at-least 2.13 "$git_version" \
-  && alias gsta='git stash push' \
-  || alias gsta='git stash save'
+alias gsta='git stash push'
 alias gstu='gsta --include-untracked'
 
 # Merge and rebase aliases
@@ -595,9 +586,7 @@ alias gqu="git-quick-update"
 # Set upstream branch
 alias ggsup='git branch --set-upstream-to=origin/$(git_current_branch)'
 alias gpsup='git push --set-upstream origin $(git_current_branch)'
-is-at-least 2.30 "$git_version" \
-  && alias gpsupf='git push --set-upstream origin $(git_current_branch) --force-with-lease --force-if-includes' \
-  || alias gpsupf='git push --set-upstream origin $(git_current_branch) --force-with-lease'
+alias gpsupf='git push --set-upstream origin $(git_current_branch) --force-with-lease --force-if-includes'
 
 # Pull specific branch aliases
 alias ggpull='git pull origin "$(git_current_branch)"'
