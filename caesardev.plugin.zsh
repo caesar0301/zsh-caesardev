@@ -10,11 +10,23 @@
 0="${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}"
 0="${${(M)0:#/*}:-$PWD/$0}"
 
-for f in alias.zsh dev_env.zsh git.zsh superman.zsh dev_tools.zsh; do
-  if [ -f "${0:h}/$f" ]; then
-    source "${0:h}/$f"
+# Define the files to load in order of dependency
+local -a plugin_files=(
+  "alias.zsh"        # Basic aliases
+  "dev-env.zsh"      # Development environment setup
+  "git.zsh"          # Git utilities
+  "dev-tools.zsh"    # Development tools
+  "docker-dev.zsh"   # Docker development utilities
+  "superman.zsh"     # Superman utilities (decryption, etc.)
+)
+
+local plugin_dir="${0:h}"
+
+for f in "${plugin_files[@]}"; do
+  if [ -f "${plugin_dir}/$f" ]; then
+    source "${plugin_dir}/$f"
   else
-    echo "[caesardev.plugin.zsh] Warning: ${0:h}/$f not found, skipping." >&2
+    echo "[caesardev.plugin.zsh] Warning: ${plugin_dir}/$f not found, skipping." >&2
   fi
 
 done

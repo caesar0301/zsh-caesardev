@@ -25,39 +25,39 @@ _init_pyenv() {
 _init_pyenv
 
 # --- Go Environment (Disabled) ---
+_init_go_env() {
+  if command -v go &>/dev/null; then
+    export GOROOT=$(go env GOROOT)
+    export GOPATH=$(go env GOPATH)
+    export GO111MODULE=on
+    export GOPROXY=https://goproxy.cn,direct
+  fi
+}
 # Uncomment to enable Go environment setup
-# _init_go_env() {
-#   if command -v go &>/dev/null; then
-#     export GOROOT=$(go env GOROOT)
-#     export GOPATH=$(go env GOPATH)
-#     export GO111MODULE=on
-#     export GOPROXY=https://goproxy.cn,direct
-#   fi
-# }
 # _init_go_env
 
 # --- Java Environment (Disabled) ---
+_init_jenv() {
+  if [ -d "$HOME/.jenv" ]; then
+    _prepend_to_path "$HOME/.jenv/bin"
+    if command -v jenv &>/dev/null; then
+      eval "$(jenv init -)"
+    fi
+  fi
+}
 # Uncomment to enable jenv setup
-# _init_jenv() {
-#   if [ -d "$HOME/.jenv" ]; then
-#     _prepend_to_path "$HOME/.jenv/bin"
-#     if command -v jenv &>/dev/null; then
-#       eval "$(jenv init -)"
-#     fi
-#   fi
-# }
 # _init_jenv
 
 # --- Haskell Environment (Disabled) ---
+_init_haskell_env() {
+  if [ -d "$HOME/.ghcup" ]; then
+    _prepend_to_path "$HOME/.ghcup/bin"
+  fi
+  if [ -d "$HOME/.cabal" ]; then
+    _prepend_to_path "$HOME/.cabal/bin"
+  fi
+}
 # Uncomment to enable Haskell setup
-# _init_haskell_env() {
-#   if [ -d "$HOME/.ghcup" ]; then
-#     _prepend_to_path "$HOME/.ghcup/bin"
-#   fi
-#   if [ -d "$HOME/.cabal" ]; then
-#     _prepend_to_path "$HOME/.cabal/bin"
-#   fi
-# }
 # _init_haskell_env
 
 # --- Lisp Environment ---
