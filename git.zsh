@@ -60,7 +60,7 @@ alias gcm='git checkout $(git_main_branch)'
 
 # Diff aliases
 alias gd='git diff --ws-error-highlight=all'
-alias gdca='git diff --cached'
+alias gdc='git diff --cached'
 alias gdcw='git diff --cached --word-diff'
 alias gds='git diff --staged'
 alias gdw='git diff --word-diff'
@@ -233,6 +233,62 @@ alias glfsmi='git lfs migrate import --include='
 # =====================
 # Core Git Functions
 # =====================
+
+# Git wrapper that prevents interference with other git processes
+function __git_prompt_git() {
+  GIT_OPTIONAL_LOCKS=0 command git "$@"
+}
+
+# Get current branch name
+function current_branch() {
+  git_current_branch
+}
+
+# Outputs the name of the current branch
+# Usage example: git pull origin $(git_current_branch)
+function git_current_branch() {
+  local ref
+  ref=$(__git_prompt_git symbolic-ref --quiet HEAD 2> /dev/null)
+  local ret=$?
+  if [[ $ret != 0 ]]; then
+    [[ $ret == 128 ]] && return  # no git repo.
+    ref=$(__git_prompt_git rev-parse --short HEAD 2> /dev/null) || return
+  fi
+  echo ${ref#refs/heads/}
+}
+
+# Outputs the name of the previously checked out branch
+# Usage example: git pull origin $(git_previous_branch)
+function git_previous_branch() {
+  local ref
+  ref=$(__git_prompt_git rev-parse --quiet --symbolic-full-name @{-1} 2> /dev/null)
+  local ret=$?
+  if [[ $ret != 0 ]] || [[ -z $ref ]]; then
+    return  # no git repo or non-branch previous ref
+  fi
+  echo ${ref#refs/heads/}
+}
+
+# Output the name of the root directory of the git repository
+# Usage example: $(git_repo_name)
+function git_repo_name() {
+  local repo_path
+  if repo_path="$(__git_prompt_git rev-parse --show-toplevel 2>/dev/null)" && [[ -n "$repo_path" ]]; then
+    echo ${repo_path:t}
+  fi
+}
+
+# Outputs the name of the current user
+# Usage example: $(git_current_user_name)
+function git_current_user_name() {
+  __git_prompt_git config user.name 2>/dev/null
+}
+
+# Outputs the email of the current user
+# Usage example: $(git_current_user_email)
+function git_current_user_email() {
+  __git_prompt_git config user.email 2>/dev/null
+}
 
 # Check for develop and similarly named branches
 function git_develop_branch() {
