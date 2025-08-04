@@ -336,7 +336,6 @@ function ggl() {
     git pull origin "${b:=$1}"
   fi
 }
-compdef _git ggl=git-checkout
 
 function ggp() {
   if [[ "$#" != 0 ]] && [[ "$#" != 1 ]]; then
@@ -346,7 +345,6 @@ function ggp() {
     git push origin "${b:=$1}"
   fi
 }
-compdef _git ggp=git-checkout
 
 function ggpnp() {
   if [[ "$#" == 0 ]]; then
@@ -355,25 +353,21 @@ function ggpnp() {
     ggl "${*}" && ggp "${*}"
   fi
 }
-compdef _git ggpnp=git-checkout
 
 function ggu() {
   [[ "$#" != 1 ]] && local b="$(git_current_branch)"
   git pull --rebase origin "${b:=$1}"
 }
-compdef _git ggu=git-checkout
 
 function ggf() {
   [[ "$#" != 1 ]] && local b="$(git_current_branch)"
   git push --force origin "${b:=$1}"
 }
-compdef _git ggf=git-checkout
 
 function ggfl() {
   [[ "$#" != 1 ]] && local b="$(git_current_branch)"
   git push --force-with-lease origin "${b:=$1}"
 }
-compdef _git ggfl=git-checkout
 
 # Clone and cd function
 function gccd() {
@@ -389,17 +383,14 @@ function gccd() {
   # otherwise parse the repo URI and use the last part as the directory
   [[ -d "$_" ]] && cd "$_" || cd "${${repo:t}%.git/#}"
 }
-compdef _git gccd=git-clone
 
 # Diff function with view
 function gdv() { git diff -w "$@" | view - }
-compdef _git gdv=git-diff
 
 # Diff without lock files
 function gdnolock() {
   git diff "$@" ":(exclude)package-lock.json" ":(exclude)*.lock"
 }
-compdef _git gdnolock=git-diff
 
 # Pretty log function
 function _git_log_prettily(){
@@ -407,7 +398,6 @@ function _git_log_prettily(){
     git log --pretty=$1
   fi
 }
-compdef _git _git_log_prettily=git-log
 
 # WIP (Work in Progress) functions
 function gwip() {
