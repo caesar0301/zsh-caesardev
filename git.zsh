@@ -6,9 +6,6 @@
 # This file combines git aliases, functions, and LFS utilities
 # from multiple sources into a single, organized module.
 
-# Git version checking for conditional aliases
-git_version="${${(As: :)$(git version 2>/dev/null)}[3]}"
-
 # =====================
 # Core Git Aliases
 # =====================
@@ -609,27 +606,3 @@ alias gsr='git svn rebase'
 alias gpristine='git reset --hard && git clean --force -dfx'
 alias gwipe='git reset --hard && git clean --force -df'
 alias groh='git reset origin/$(git_current_branch) --hard'
-
-# =====================
-# Deprecated Alias Warnings
-# =====================
-
-# Logic for adding warnings on deprecated aliases
-local old_alias new_alias
-for old_alias new_alias (
-  # TODO(2023-10-19): remove deprecated `git pull --rebase` aliases
-  gup     gpr
-  gupv    gprv
-  gupa    gpra
-  gupav   gprav
-  gupom   gprom
-  gupomi  gpromi
-); do
-  aliases[$old_alias]="
-    print -Pu2 \"%F{yellow}[oh-my-zsh] '%F{red}${old_alias}%F{yellow}' is a deprecated alias, using '%F{green}${new_alias}%F{yellow}' instead.%f\"
-    $new_alias"
-done
-unset old_alias new_alias
-
-# Clean up
-unset git_version
