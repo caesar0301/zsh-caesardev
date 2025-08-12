@@ -100,6 +100,7 @@ alias glg='git log --stat'
 alias glgp='git log --stat --patch'
 alias glp='_git_log_prettily'
 alias gll='git log | less'
+alias ghf="git log --follow -p --"
 
 # Status aliases
 alias gst='git status'
