@@ -63,6 +63,11 @@ alias gdw='git diff --word-diff'
 alias gdup='git diff @{upstream}'
 alias gdt='git diff-tree --no-commit-id --name-only -r'
 
+gdbf() {
+  local n=${1:-1}
+  git diff --binary HEAD~"$n"
+}
+
 # Fetch and pull aliases
 alias gf='git fetch'
 alias gfo='git fetch origin'
