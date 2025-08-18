@@ -85,3 +85,14 @@ _init_lisp_env() {
   fi
 }
 _init_lisp_env
+
+# --- node Environment ---
+# Initialize nvm if available
+_init_node_env() {
+  if [ -d "$HOME/.nvm" ]; then
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  fi
+}
+_init_node_env
