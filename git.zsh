@@ -573,6 +573,32 @@ function git-quick-update() {
 alias gqu="git-quick-update"
 
 # =====================
+# Quick Branch Update
+# =====================
+
+# Rebase current branch on top of target branch
+git-sync-rebase() {
+  if [ -z "$1" ]; then
+    echo "Usage: git-sync-rebase <target-branch>"
+    return 1
+  fi
+  target="$1"
+  git fetch origin "$target" && \
+  git rebase "origin/$target"
+}
+
+# Force reset current branch to match target branch
+git-sync-reset() {
+  if [ -z "$1" ]; then
+    echo "Usage: git-sync-reset <target-branch>"
+    return 1
+  fi
+  target="$1"
+  git fetch origin "$target" && \
+  git reset --hard "origin/$target"
+}
+
+# =====================
 # Utility Aliases
 # =====================
 
