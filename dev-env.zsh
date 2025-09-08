@@ -31,10 +31,10 @@ _init_go_env() {
     export GOPATH=$(go env GOPATH)
     export GO111MODULE=on
     export GOPROXY=https://goproxy.cn,direct
+    export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
   fi
 }
-# Uncomment to enable Go environment setup
-# _init_go_env
+_init_go_env
 
 # --- Java Environment (Disabled) ---
 _init_jenv() {
@@ -45,8 +45,7 @@ _init_jenv() {
     fi
   fi
 }
-# Uncomment to enable jenv setup
-# _init_jenv
+_init_jenv
 
 # --- Haskell Environment (Disabled) ---
 _init_haskell_env() {
