@@ -1,8 +1,8 @@
 # =====================
 # Editor Aliases
 # =====================
-export EDITOR=vim
-alias vi=vim
+export EDITOR=nvim
+alias vi=nvim
 alias em='emacs -nw'
 
 # =====================
