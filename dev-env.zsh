@@ -22,6 +22,7 @@ _init_pyenv() {
     fi
   fi
 }
+_init_pyenv
 
 # --- Go Environment (Disabled) ---
 _init_go_env() {
