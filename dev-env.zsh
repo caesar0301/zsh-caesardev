@@ -22,7 +22,6 @@ _init_pyenv() {
     fi
   fi
 }
-_init_pyenv
 
 # --- Go Environment (Disabled) ---
 _init_go_env() {
@@ -34,7 +33,6 @@ _init_go_env() {
     export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
   fi
 }
-_init_go_env
 
 # --- Java Environment (Disabled) ---
 _init_jenv() {
@@ -45,7 +43,6 @@ _init_jenv() {
     fi
   fi
 }
-_init_jenv
 
 # --- Haskell Environment (Disabled) ---
 _init_haskell_env() {
@@ -56,8 +53,6 @@ _init_haskell_env() {
     _prepend_to_path "$HOME/.cabal/bin"
   fi
 }
-# Uncomment to enable Haskell setup
-# _init_haskell_env
 
 # --- Lisp Environment ---
 # Initialize Lisp/Quicklisp/Roswell/Allegro CL if available
@@ -83,7 +78,6 @@ _init_lisp_env() {
     alias mlisp="rlwrap -f $HOME/.config/rlwrap/lisp_completions --remember mlisp"
   fi
 }
-_init_lisp_env
 
 # --- node Environment ---
 # Initialize nvm if available
@@ -94,4 +88,3 @@ _init_node_env() {
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
   fi
 }
-_init_node_env
