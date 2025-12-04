@@ -13,7 +13,8 @@
 # Define the files to load in order of dependency
 local -a plugin_files=(
   "alias.zsh"        # Basic aliases
-  "dev-env.zsh"      # Development environment setup
+  "env-vars.zsh      # Env variables
+  "venv.zsh"         # Development environment setup
   "git.zsh"          # Git utilities
   "dev-tools.zsh"    # Development tools
   "docker-dev.zsh"   # Docker development utilities
