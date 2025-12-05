@@ -13,12 +13,12 @@ _superman_print_error() {
 }
 
 # --- Decryption Utilities ---
-# Decrypt a file using gpg-dotme tool
+# Decrypt a file using dotme-gpg tool
 _superman_decrypt_file() {
   local alias_name="${1:-default}"
   local encrypted_file="${2:-}"
   local target_file="${3:-}"
-  local gpg_tool="$HOME/.dotfiles/bin/gpg-dotme"
+  local gpg_tool="$HOME/.dotfiles/bin/dotme-gpg"
 
   # Help message
   if [[ "$alias_name" == "help" || "$alias_name" == "-h" || "$alias_name" == "--help" ]]; then
