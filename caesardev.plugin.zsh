@@ -14,11 +14,6 @@
 local -a plugin_files=(
   "alias.zsh"        # Basic aliases
   "env-vars.zsh"     # Env variables
-  "venv.zsh"         # Development environment setup
-  "git.zsh"          # Git utilities
-  "dev-tools.zsh"    # Development tools
-  "docker-dev.zsh"   # Docker development utilities
-  "superman.zsh"     # Superman utilities (decryption, etc.)
 )
 
 local plugin_dir="${0:h}"
