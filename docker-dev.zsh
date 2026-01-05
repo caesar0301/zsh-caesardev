@@ -31,6 +31,11 @@ docker-compose-stop-world() {
   done
 }
 
+# Reset Colima environment (dangerous: removes all data)
+docker-colima-reset-all() {
+  rm -rf ~/.colima ~/.lima ~/.docker
+}
+
 # Diagnose Docker and Colima status
 docker-colima-diagnose() {
     echo "🔍 Docker & Colima Diagnostics"
